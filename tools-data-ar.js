@@ -282,7 +282,7 @@ const tools = [
     {
         name: "Sounds: The Pronunciation App",
         category: "النطق",
-        skills: ["reading"],
+        skills: ["speaking", "listening"],
         levels: ["beginner", "intermediate", "advanced", "all"],
         priceMin: 0,
         priceMax: 4.99,
@@ -522,7 +522,7 @@ const tools = [
     {
         name: "Rachel's English",
         category: "قنوات يوتيوب",
-        skills: ["listening"],
+        skills: ["speaking", "listening"],
         levels: ["intermediate", "advanced", "all"],
         priceMin: 0,
         priceMax: 397,
