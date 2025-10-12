@@ -4,6 +4,8 @@ let selections = {
     level: null
 };
 
+let allFilteredResults = []; // Store all results for category filtering
+
 function updateProgressBar(stepNum) {
     document.querySelectorAll('.progress-step').forEach(step => {
         const stepNumber = parseInt(step.dataset.step);
@@ -107,11 +109,26 @@ function showResults() {
         return a.priceMin - b.priceMin;
     });
     
-    // Display results
-    const container = document.getElementById('results-container');
-    document.getElementById('count').textContent = filtered.length;
+    // Store results globally for category filtering
+    allFilteredResults = filtered;
     
-    if (filtered.length === 0) {
+    // Display results
+    displayResults(filtered);
+    
+    // Setup category filter buttons
+    setupCategoryFilters();
+    
+    document.querySelector('.step.active').classList.remove('active');
+    document.getElementById('results').classList.add('active');
+    updateProgressBar(4);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function displayResults(tools) {
+    const container = document.getElementById('results-container');
+    document.getElementById('count').textContent = tools.length;
+    
+    if (tools.length === 0) {
         container.innerHTML = `
             <div class="no-results">
                 <h3>😔 لم يتم العثور على تطابق تام</h3>
@@ -119,7 +136,7 @@ function showResults() {
             </div>
         `;
     } else {
-        container.innerHTML = filtered.map(tool => `
+        container.innerHTML = tools.map(tool => `
             <div class="tool-card">
                 <div class="tool-card-header">
                     <div>
@@ -139,11 +156,33 @@ function showResults() {
             </div>
         `).join('');
     }
+}
+
+function setupCategoryFilters() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
     
-    document.querySelector('.step.active').classList.remove('active');
-    document.getElementById('results').classList.add('active');
-    updateProgressBar(4);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Remove active class from all buttons
+            filterButtons.forEach(b => b.classList.remove('active'));
+            
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            // Get selected category
+            const selectedCategory = this.dataset.category;
+            
+            // Filter and display
+            if (selectedCategory === 'all') {
+                displayResults(allFilteredResults);
+            } else {
+                const categoryFiltered = allFilteredResults.filter(tool => 
+                    tool.category === selectedCategory
+                );
+                displayResults(categoryFiltered);
+            }
+        });
+    });
 }
 
 function resetFinder() {
