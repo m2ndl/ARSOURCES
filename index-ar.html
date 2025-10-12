@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أداة البحث عن موارد تعلم الإنجليزية - اعثر على المصدر المثالي</title>
+    <meta name="description" content="ابحث عن أفضل أدوات تعلم اللغة الإنجليزية بناءً على أهدافك وميزانيتك ومستواك. قارن التطبيقات والمواقع والموارد لتعلم الإنجليزية.">
+    <link rel="stylesheet" href="styles-ar.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 أداة البحث عن موارد تعلم الإنجليزية</h1>
+            <p class="subtitle">اكتشف الموارد المثالية لرحلة تعلم اللغة الإنجليزية</p>
+        </header>
+
+        <div id="tool-finder">
+            <!-- Progress Bar -->
+            <div class="progress-bar">
+                <div class="progress-step active" data-step="1">
+                    <div class="progress-circle">1</div>
+                    <span>الأهداف</span>
+                </div>
+                <div class="progress-line"></div>
+                <div class="progress-step" data-step="2">
+                    <div class="progress-circle">2</div>
+                    <span>الميزانية</span>
+                </div>
+                <div class="progress-line"></div>
+                <div class="progress-step" data-step="3">
+                    <div class="progress-circle">3</div>
+                    <span>المستوى</span>
+                </div>
+            </div>
+
+            <!-- Step 1: Goals -->
+            <div class="step active" id="step-1">
+                <h2>ما الذي تريد تحسينه؟</h2>
+                <p class="step-description">اختر مهارة واحدة أو أكثر تريد التركيز عليها</p>
+                <div class="options">
+                    <input type="checkbox" id="speaking" value="speaking">
+                    <label for="speaking">
+                        <span class="icon">🗣️</span>
+                        <span class="label-text">التحدث والنطق</span>
+                    </label>
+                    
+                    <input type="checkbox" id="grammar" value="grammar">
+                    <label for="grammar">
+                        <span class="icon">✏️</span>
+                        <span class="label-text">القواعد والكتابة</span>
+                    </label>
+                    
+                    <input type="checkbox" id="vocabulary" value="vocabulary">
+                    <label for="vocabulary">
+                        <span class="icon">📚</span>
+                        <span class="label-text">المفردات</span>
+                    </label>
+                    
+                    <input type="checkbox" id="reading" value="reading">
+                    <label for="reading">
+                        <span class="icon">📖</span>
+                        <span class="label-text">القراءة</span>
+                    </label>
+                    
+                    <input type="checkbox" id="listening" value="listening">
+                    <label for="listening">
+                        <span class="icon">👂</span>
+                        <span class="label-text">الاستماع</span>
+                    </label>
+                    
+                    <input type="checkbox" id="all" value="all">
+                    <label for="all">
+                        <span class="icon">🌟</span>
+                        <span class="label-text">جميع المهارات</span>
+                    </label>
+                </div>
+                <div class="button-group">
+                    <button onclick="nextStep(2)" class="btn-primary">التالي ←</button>
+                    <div></div>
+                </div>
+            </div>
+
+            <!-- Step 2: Budget -->
+            <div class="step" id="step-2">
+                <h2>ما هي ميزانيتك؟</h2>
+                <p class="step-description">اختر النطاق السعري المناسب لك</p>
+                <div class="options">
+                    <input type="radio" name="budget" id="free" value="free">
+                    <label for="free">
+                        <span class="icon">💚</span>
+                        <span class="label-text">مجاني فقط</span>
+                        <span class="label-desc">لا يتطلب دفع</span>
+                    </label>
+                    
+                    <input type="radio" name="budget" id="cheap" value="cheap">
+                    <label for="cheap">
+                        <span class="icon">💰</span>
+                        <span class="label-text">أقل من 10 دولار/شهر</span>
+                        <span class="label-desc">خيارات مناسبة للميزانية</span>
+                    </label>
+                    
+                    <input type="radio" name="budget" id="any" value="any">
+                    <label for="any">
+                        <span class="icon">💎</span>
+                        <span class="label-text">أي سعر</span>
+                        <span class="label-desc">أظهر لي كل شيء</span>
+                    </label>
+                </div>
+                <div class="button-group">
+                    <button onclick="nextStep(3)" class="btn-primary">التالي ←</button>
+                    <button onclick="prevStep(1)" class="btn-secondary">→ رجوع</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Level -->
+            <div class="step" id="step-3">
+                <h2>ما هو مستواك الحالي؟</h2>
+                <p class="step-description">هذا يساعدنا على التوصية بالأدوات المناسبة</p>
+                <div class="options">
+                    <input type="radio" name="level" id="beginner" value="beginner">
+                    <label for="beginner">
+                        <span class="icon">🌱</span>
+                        <span class="label-text">مبتدئ</span>
+                        <span class="label-desc">A1-A2: بداية التعلم</span>
+                    </label>
+                    
+                    <input type="radio" name="level" id="intermediate" value="intermediate">
+                    <label for="intermediate">
+                        <span class="icon">📈</span>
+                        <span class="label-text">متوسط</span>
+                        <span class="label-desc">B1-B2: بناء الطلاقة</span>
+                    </label>
+                    
+                    <input type="radio" name="level" id="advanced" value="advanced">
+                    <label for="advanced">
+                        <span class="icon">🚀</span>
+                        <span class="label-text">متقدم</span>
+                        <span class="label-desc">C1-C2: صقل المهارات</span>
+                    </label>
+                    
+                    <input type="radio" name="level" id="all-levels" value="all">
+                    <label for="all-levels">
+                        <span class="icon">✨</span>
+                        <span class="label-text">جميع المستويات</span>
+                        <span class="label-desc">أظهر كل شيء</span>
+                    </label>
+                </div>
+                <div class="button-group">
+                    <button onclick="showResults()" class="btn-primary">عرض النتائج ←</button>
+                    <button onclick="prevStep(2)" class="btn-secondary">→ رجوع</button>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div class="step" id="results">
+                <div class="results-header">
+                    <h2>✨ توصياتك الشخصية</h2>
+                    <div class="results-count">تم العثور على <span id="count">0</span> أداة</div>
+                </div>
+                <div id="results-container"></div>
+                <div class="button-group" style="margin-top: 30px;">
+                    <button onclick="window.print()" class="btn-outline">🖨️ طباعة النتائج</button>
+                    <button onclick="resetFinder()" class="btn-secondary">→ البدء من جديد</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>صُنع بـ ❤️ لمتعلمي الإنجليزية في جميع أنحاء العالم</p>
+            <p><a href="https://github.com/yourusername/english-tool-finder" target="_blank">عرض على GitHub</a></p>
+        </footer>
+    </div>
+
+    <script src="tools-data-ar.js"></script>
+    <script src="app-ar.js"></script>
+</body>
+</html>
