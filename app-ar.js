@@ -115,12 +115,15 @@ function showResults() {
     // Display results
     displayResults(filtered);
     
-    // Setup category filter buttons
-    setupCategoryFilters();
-    
     document.querySelector('.step.active').classList.remove('active');
     document.getElementById('results').classList.add('active');
     updateProgressBar(4);
+    
+    // Setup category filter buttons after DOM is updated
+    setTimeout(() => {
+        setupCategoryFilters();
+    }, 0);
+    
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -159,18 +162,23 @@ function displayResults(tools) {
 }
 
 function setupCategoryFilters() {
-    const filterButtons = document.querySelectorAll('.filter-btn');
+    const filterContainer = document.querySelector('.category-filter');
     
-    filterButtons.forEach(btn => {
-        btn.addEventListener('click', function() {
+    // Remove any existing listener
+    const newContainer = filterContainer.cloneNode(true);
+    filterContainer.parentNode.replaceChild(newContainer, filterContainer);
+    
+    // Add event delegation listener to container
+    newContainer.addEventListener('click', function(e) {
+        if (e.target.classList.contains('filter-btn')) {
             // Remove active class from all buttons
-            filterButtons.forEach(b => b.classList.remove('active'));
+            newContainer.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             
             // Add active class to clicked button
-            this.classList.add('active');
+            e.target.classList.add('active');
             
             // Get selected category
-            const selectedCategory = this.dataset.category;
+            const selectedCategory = e.target.dataset.category;
             
             // Filter and display
             if (selectedCategory === 'all') {
@@ -181,7 +189,7 @@ function setupCategoryFilters() {
                 );
                 displayResults(categoryFiltered);
             }
-        });
+        }
     });
 }
 
