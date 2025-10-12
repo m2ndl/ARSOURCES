@@ -63,7 +63,7 @@ function showResults() {
     }
     selections.level = checked.value;
     
-    // Filter tools
+    // Filter tools and calculate relevance scores
     let filtered = tools.filter(tool => {
         const matchesGoal = selections.goals.some(goal => tool.skills.includes(goal));
         
@@ -77,12 +77,33 @@ function showResults() {
         const matchesLevel = tool.levels.includes(selections.level) || tool.levels.includes('all');
         
         return matchesGoal && matchesBudget && matchesLevel;
+    }).map(tool => {
+        // Calculate relevance score
+        const matchingSkills = selections.goals.filter(goal => tool.skills.includes(goal)).length;
+        const totalSkills = tool.skills.filter(s => s !== 'all').length;
+        
+        // Specialization score: more specialized (fewer skills) = higher score
+        const specializationScore = totalSkills > 0 ? matchingSkills / totalSkills : 0;
+        
+        // Bonus for highly specialized tools (3 or fewer skills)
+        const specializationBonus = totalSkills <= 3 ? 0.3 : 0;
+        
+        // Final relevance score
+        const relevanceScore = specializationScore + specializationBonus;
+        
+        return { ...tool, relevanceScore };
     });
     
-    // Sort by price (free first)
+    // Sort by relevance, then by price (free first)
     filtered.sort((a, b) => {
+        // First sort by relevance
+        if (Math.abs(a.relevanceScore - b.relevanceScore) > 0.01) {
+            return b.relevanceScore - a.relevanceScore;
+        }
+        // Then by free vs paid
         if (a.isFree && !b.isFree) return -1;
         if (!a.isFree && b.isFree) return 1;
+        // Finally by price
         return a.priceMin - b.priceMin;
     });
     
