@@ -6,6 +6,30 @@ let selections = {
 
 let allFilteredResults = []; // Store all results for category filtering
 
+// "القواعد والكتابة" covers both grammar and writing tools; "جميع المهارات" covers every tool
+function matchesGoal(goal, tool) {
+    if (goal === 'all') return true;
+    if (goal === 'grammar') return tool.skills.includes('grammar') || tool.skills.includes('writing');
+    return tool.skills.includes(goal);
+}
+
+// Inline validation message instead of a browser alert
+function showStepError(stepId, message) {
+    const step = document.getElementById(stepId);
+    let box = step.querySelector('.step-error');
+    if (!box) {
+        box = document.createElement('p');
+        box.className = 'step-error';
+        box.setAttribute('role', 'alert');
+        step.querySelector('.button-group').before(box);
+    }
+    box.textContent = message;
+}
+
+function clearStepErrors() {
+    document.querySelectorAll('.step-error').forEach(e => e.remove());
+}
+
 function updateProgressBar(stepNum) {
     document.querySelectorAll('.progress-step').forEach(step => {
         const stepNumber = parseInt(step.dataset.step);
@@ -28,20 +52,21 @@ function nextStep(stepNumber) {
     if (stepNumber === 2) {
         const checked = document.querySelectorAll('#step-1 input:checked');
         if (checked.length === 0) {
-            alert('⚠️ الرجاء اختيار مهارة واحدة على الأقل');
+            showStepError('step-1', 'الرجاء اختيار مهارة واحدة على الأقل');
             return;
         }
         selections.goals = Array.from(checked).map(i => i.value);
     } else if (stepNumber === 3) {
         const checked = document.querySelector('input[name="budget"]:checked');
         if (!checked) {
-            alert('⚠️ الرجاء اختيار ميزانية');
+            showStepError('step-2', 'الرجاء اختيار ميزانية');
             return;
         }
         selections.budget = checked.value;
     }
     
     // Navigate
+    clearStepErrors();
     currentStep.classList.remove('active');
     document.getElementById('step-' + stepNumber).classList.add('active');
     updateProgressBar(stepNumber);
@@ -51,6 +76,7 @@ function nextStep(stepNumber) {
 }
 
 function prevStep(stepNumber) {
+    clearStepErrors();
     document.querySelector('.step.active').classList.remove('active');
     document.getElementById('step-' + stepNumber).classList.add('active');
     updateProgressBar(stepNumber);
@@ -60,29 +86,34 @@ function prevStep(stepNumber) {
 function showResults() {
     const checked = document.querySelector('input[name="level"]:checked');
     if (!checked) {
-        alert('⚠️ الرجاء اختيار مستواك');
+        showStepError('step-3', 'الرجاء اختيار مستواك');
         return;
     }
     selections.level = checked.value;
+    clearStepErrors();
     
     // Filter tools and calculate relevance scores
     let filtered = tools.filter(tool => {
-        const matchesGoal = selections.goals.some(goal => tool.skills.includes(goal));
+        const goalMatch = selections.goals.some(goal => matchesGoal(goal, tool));
         
+        // A tool fits a budget if it can be used at that price: free tools fit every budget
         let matchesBudget = true;
         if (selections.budget === 'free') {
             matchesBudget = tool.isFree;
         } else if (selections.budget === 'cheap') {
-            matchesBudget = tool.priceMax <= 10;
+            matchesBudget = tool.isFree || tool.priceMin <= 10;
         }
         
-        const matchesLevel = tool.levels.includes(selections.level) || tool.levels.includes('all');
+        // Every tool carries the "all" tag, so a specific level must match the tool's own levels
+        const matchesLevel = selections.level === 'all' || tool.levels.includes(selections.level);
         
-        return matchesGoal && matchesBudget && matchesLevel;
+        return goalMatch && matchesBudget && matchesLevel;
     }).map(tool => {
         // Calculate relevance score
-        const matchingSkills = selections.goals.filter(goal => tool.skills.includes(goal)).length;
         const totalSkills = tool.skills.filter(s => s !== 'all').length;
+        const matchingSkills = selections.goals.includes('all')
+            ? totalSkills
+            : selections.goals.filter(goal => matchesGoal(goal, tool)).length;
         
         // Specialization score: more specialized (fewer skills) = higher score
         const specializationScore = totalSkills > 0 ? matchingSkills / totalSkills : 0;
@@ -194,6 +225,7 @@ function setupCategoryFilters() {
 }
 
 function resetFinder() {
+    clearStepErrors();
     selections = {goals: [], budget: null, level: null};
     document.querySelectorAll('input').forEach(i => i.checked = false);
     document.querySelector('.step.active').classList.remove('active');
@@ -201,6 +233,18 @@ function resetFinder() {
     updateProgressBar(1);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// "جميع المهارات" and single skills are exclusive: picking one clears the other
+document.querySelectorAll('#step-1 input[type="checkbox"]').forEach(box => {
+    box.addEventListener('change', () => {
+        if (!box.checked) return;
+        if (box.value === 'all') {
+            document.querySelectorAll('#step-1 input[type="checkbox"]:not([value="all"])').forEach(b => b.checked = false);
+        } else {
+            document.getElementById('all').checked = false;
+        }
+    });
+});
 
 // Initialize
 updateProgressBar(1);

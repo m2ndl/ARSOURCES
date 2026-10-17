@@ -40,19 +40,6 @@ const tools = [
         cefr: "A1-B2"
     },
     {
-        name: "HelloEnglish",
-        category: "تطبيقات (جميع المهارات)",
-        skills: ["reading", "listening", "speaking", "writing", "grammar", "vocabulary", "all"],
-        levels: ["beginner", "intermediate", "all"],
-        priceMin: 0,
-        priceMax: 0,
-        link: "https://helloenglish.com",
-        description: "تطبيق لتعلم الإنجليزية مع أكثر من 475 درساً تفاعلياً وألعاباً وتدريبات في التحدث والقراءة والكتابة والاستماع مع تعليمات متاحة بأكثر من 22 لغة أصلية.",
-        isFree: true,
-        platforms: ["iOS", "Android", "ويب", "سطح المكتب"],
-        cefr: "A1-B2"
-    },
-    {
         name: "Rosetta Stone",
         category: "تطبيقات (جميع المهارات)",
         skills: ["reading", "listening", "speaking", "writing", "grammar", "vocabulary", "all"],
@@ -277,19 +264,6 @@ const tools = [
         description: "منصة تعلم لغات غير ربحية تقدم تدريباً على النطق مع ملاحظات بشرية من مدربين متحدثين أصليين خلال 24 ساعة.",
         isFree: true,
         platforms: ["iOS", "Android", "ويب"],
-        cefr: "A1-C2"
-    },
-    {
-        name: "Sounds: The Pronunciation App",
-        category: "النطق",
-        skills: ["speaking", "listening"],
-        levels: ["beginner", "intermediate", "advanced", "all"],
-        priceMin: 0,
-        priceMax: 4.99,
-        link: "https://apps.apple.com/app/sounds-pronunciation-app",
-        description: "تطبيق رسم صوتي تفاعلي مبني على 'أسس الصوت' لأدريان أندرهيل يُظهر النطق البريطاني والأمريكي.",
-        isFree: true,
-        platforms: ["iOS", "Android"],
         cefr: "A1-C2"
     },
     {
@@ -591,7 +565,7 @@ const tools = [
         levels: ["intermediate", "advanced", "all"],
         priceMin: 0,
         priceMax: 297,
-        link: "https://www.youtube.com/@mmmenglish_emma",
+        link: "https://www.youtube.com/channel/UCrRiVfHqBIIvSgKmgnSY66g",
         description: "قناة معلمة إنجليزية أسترالية تركز على بناء الثقة من خلال دروس عملية وتقنيات التقليد والطلاقة في المحادثة.",
         isFree: true,
         platforms: ["YouTube", "ويب"],
@@ -626,13 +600,13 @@ const tools = [
         cefr: "A1-C1"
     },
     {
-        name: "Merriam-Webster Learner's Dictionary",
+        name: "Britannica Dictionary (Merriam-Webster Learner's)",
         category: "القواميس/المراجع",
         skills: ["vocabulary", "reading", "grammar"],
         levels: ["intermediate", "advanced", "all"],
         priceMin: 0,
         priceMax: 5.99,
-        link: "https://learnersdictionary.com",
+        link: "https://www.britannica.com/dictionary",
         description: "قاموس إنجليزية أمريكية مصمم خصيصاً لمتعلمي ESL/EFL مع تعريفات واضحة باستخدام لغة بسيطة وأمثلة واسعة.",
         isFree: true,
         platforms: ["ويب", "iOS", "Android"],

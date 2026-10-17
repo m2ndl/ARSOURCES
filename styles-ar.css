@@ -513,3 +513,12 @@ footer a {
         display: none;
     }
 }
+
+.step-error {
+    margin: 16px 0 0;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: #fdecea;
+    color: #8a1c12;
+    font-weight: 500;
+}
