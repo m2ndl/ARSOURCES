@@ -46,6 +46,8 @@ def check(item):
     if status is None or status >= 500:
         time.sleep(5)  # one retry for passing outages
         status, final = fetch(url)
+    if status is None and 'timed out' in final.lower():
+        return name, url, 'slow', final  # some sites stall scripted visitors; not proof the link is dead
     if status is None:
         return name, url, 'broken', final
     if status in (404, 410) or status >= 500:
@@ -66,6 +68,7 @@ def main():
         results = list(pool.map(check, items))
     broken = [r for r in results if r[2] == 'broken']
     moved = [r for r in results if r[2] == 'moved']
+    slow = [r for r in results if r[2] == 'slow']
     lines = [f'Checked {len(items)} links in `tools-data-ar.js`.', '']
     if broken:
         lines += ['## Not working', '', '| Tool | Link | Problem |', '|---|---|---|']
@@ -73,7 +76,10 @@ def main():
     if moved:
         lines += ['## Now redirects to another site (worth a look)', '', '| Tool | Link | Ends up at |', '|---|---|---|']
         lines += [f'| {n} | {u} | {p} |' for n, u, _, p in moved] + ['']
-    if not broken and not moved:
+    if slow:
+        lines += ['## Did not answer in time (check by hand if it repeats)', '', '| Tool | Link |', '|---|---|']
+        lines += [f'| {n} | {u} |' for n, u, _, _ in slow] + ['']
+    if not broken and not moved and not slow:
         lines.append('All links work.')
     REPORT.write_text('\n'.join(lines) + '\n', encoding='utf-8')
     print('\n'.join(lines))
